@@ -21,7 +21,7 @@ def generateA():
         for j in range(N):
             A[i][j] -= lmbd * K_generator(i + 1, j + 1)
     
-    return A
+    return np.matrix(A)
 
 # Создание столбца F
 def generateF():
@@ -105,11 +105,14 @@ print('-' * 80)
 solution = L_solve(L, F)
 print('Решение системы Lx = F:')
 print(solution)
-print('-' * 80)
 
 solution = U_solve(U, solution)
 print('Решение системы Uy = x (совпадает с решением изначальной системы):')
 print(solution)
+
+err = solution - A.I * F
+print('y - A^{-1}*F, вычисленное для проверки:')
+print(err)
 print('-' * 80)
 
 
