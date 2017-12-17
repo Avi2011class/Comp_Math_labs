@@ -31,7 +31,7 @@ int main ( int argc, char** argv, char** env ) {
     // Так как это гарантированно локализует корень
 
 	// Желаемая абсолютная точность решения (кол-во десятичных цифр)
-    #define const_digits 10
+    #define const_digits 14
 
 	// Тогда ошибка равна
 	#define const_error boost::math::pow< const_digits >( lfloat(0.1) )
@@ -41,12 +41,12 @@ int main ( int argc, char** argv, char** env ) {
 	};
 
 	std::function < double( double ) > fd = [](double E) -> double {
-		return E - 0.1 * sin(E) - 5 * M_PI / 6;
+		return E + 0.5 * sin(E) + 3;
 	};
 
 	// Границы, на которых знак гарантированно отличается
-	lfloat E_min = -abs(const_e) - abs(const_M) - 1;
-	lfloat E_max = abs(const_e) + abs(const_M) + 1;
+	lfloat E_min = -5;
+	lfloat E_max = 5;
 	lfloat E_mid, F_mid;
 	lfloat F_max = f(E_max);
     lfloat F_min = f(E_min);
@@ -58,6 +58,8 @@ int main ( int argc, char** argv, char** env ) {
 
         //std::string log = (boost::format("f(%1%) = %2%, f(%3%) = %4%, f(%5%) = %6%") % E_min % F_min % E_mid % F_mid % E_max % F_max).str();
         //std::cout << log << std::endl;
+
+        std::cout << E_min << "    " << E_max << std::endl;
 
         if ( (F_mid <= 0 && F_max >= 0) || (F_mid >= 0 && F_max <= 0) ) {
 			E_min = E_mid;

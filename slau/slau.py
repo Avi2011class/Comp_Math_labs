@@ -2,7 +2,7 @@ import numpy as np
 import math
 
 # Параметры задачи
-N = 100
+N = 20
 h = np.pi / N
 
 # Зададим коэффициенты системы

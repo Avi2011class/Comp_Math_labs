@@ -45,7 +45,7 @@ boost::multiprecision::cpp_dec_float_100 bessel (
 	if (N_steps > Max_N_steps)
 		N_steps = Max_N_steps;
 
-	//std::cerr << "---Вычисления будут проводиться до " << N_steps << " члена ряда Тейлора" << std::endl;
+	std::cerr << "---Вычисления будут проводиться до " << N_steps << " члена ряда Тейлора" << std::endl;
 
     // Taylor series
     boost::multiprecision::cpp_dec_float_100 result = 0;
@@ -80,7 +80,7 @@ boost::multiprecision::cpp_dec_float_100 bessel_derivation (
 		return 0;
 	}
 
-	boost::multiprecision::cpp_dec_float_100 h = sqrt( eps );
+	boost::multiprecision::cpp_dec_float_100 h = 1e-100;
 	boost::multiprecision::cpp_dec_float_100 result = ( bessel(x + h, eps) - bessel(x, eps) ) / h;
 
 	return result;
@@ -88,7 +88,7 @@ boost::multiprecision::cpp_dec_float_100 bessel_derivation (
 
 int main( int argc, char** argv, char** env ) {
 	boost::multiprecision::cpp_dec_float_100 X = 100;
-
+	/*
     std::ofstream log_file;
     log_file.open("bessel_log.csv");
 
@@ -96,17 +96,17 @@ int main( int argc, char** argv, char** env ) {
     for ( double i = -10; i <= 10; i += 0.001 )
 		log_file
 			<< std::fixed << std::setprecision(10) << i << ","
-			<< std::fixed << std::setprecision(10) << bessel(i, 0.000001) << ","
+			<< std::fixed << std::setprecision(10) << bessel(i, 1e-40) << ","
 			<< std::fixed << std::setprecision(10) <<
 							boost::math::cyl_bessel_j(0, i,
-										boost::math::policies::policy< boost::math::policies::digits10<20> >()) << ","
+										boost::math::policies::policy< boost::math::policies::digits10<40> >()) << ","
 			<< std::fixed << std::setprecision(10) << bessel_derivation( i, 0.000001 ) << std::endl;
 
 
 	for ( double i = 20; i <= 220; i += 10 )
 		log_file
 			<< std::fixed << std::setprecision(10) << i << ","
-			<< std::fixed << std::setprecision(10) << bessel(i, 0.000001) << ","
+			<< std::fixed << std::setprecision(10) << bessel(i, 1e-40) << ","
 			<< std::fixed << std::setprecision(10) <<
 							boost::math::cyl_bessel_j(0, i,
 										boost::math::policies::policy< boost::math::policies::digits10<20> >()) << ","
@@ -116,5 +116,8 @@ int main( int argc, char** argv, char** env ) {
 
     system("python3 Bessel_plots.py");
     std::cout << std::endl << "Отчетность в графике bessel.png и файле bessel_log.csv" << std::endl;
+    //*/
+
+    std::cout << std::fixed << std::setprecision(40) << bessel(1, boost::multiprecision::cpp_dec_float_100(1e-6));
 	return 0;
 }
