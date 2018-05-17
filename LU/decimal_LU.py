@@ -10,17 +10,17 @@ h = 2 * np.pi / N
 
 K_generator =   lambda m, n:    h ** 2 * np.abs(n - m)
 f =             lambda x:       (1 + 2 * lmbd) * np.cos(x / 2) ** 2 - lmbd * (x ** 2 + np.pi ** 2) / 2
-F_generator =   lambda n:       f(-np.pi + (n - 0.5) * h)     
+F_generator =   lambda n:       f(-np.pi + (n - 0.5) * h)
 
 # Создание матрицы А
 def generateA():
     global N, lmbd, h, K_generator, F_generator
-    
+
     A = np.identity(N)
     for i in range(N):
         for j in range(N):
             A[i][j] -= lmbd * K_generator(i + 1, j + 1)
-    
+
     return np.matrix(A)
 
 # Создание столбца F
@@ -45,7 +45,7 @@ def LU_decomposition(A):
             su = 0
             for k in range(0, i): su += L[j, k] * U[k, i]
             L[j, i] = 1 / U[i, i] * (A[j, i] - su)
-            
+
     return L, U
 
 # Решение системы Lx = F
@@ -53,14 +53,14 @@ def L_solve(L, F):
     global N
     F_tmp = F.copy()
     solution = np.zeros(shape=N)
-    
+
     for i in range(0, N):
         for j in range(0, i):
             F_tmp[i, 0] -= solution[j] * L[i, j]
         solution[i] = F_tmp[i, 0] / L[i, i]
-        
+
     return np.matrix(solution).T
-    
+
 # Решение системы Ux =F
 def U_solve(U, F):
     global N
@@ -71,16 +71,16 @@ def U_solve(U, F):
         for j in range(N - 1, i, -1):
              F_tmp[i, 0] -= solution[j] * U[i, j]
         solution[i] = F_tmp[i, 0] / U[i, i]
-        
+
     return np.matrix(solution).T
 
-#  Объединение предыдущих методов    
+#  Объединение предыдущих методов
 def LU_system_solve(A, F):
     L, U = LU_decomposition(A)
     solution = L_solve(L, F)
     solution = U_solve(U, solution)
     return solution
-    
+
 # ------------------------------------------------
 A = generateA()
 F = generateF()
@@ -92,7 +92,7 @@ print(F)
 print('-' * 80)
 
 L, U = LU_decomposition(A)
-        
+
 print('Матрица L:')
 print(L)
 print('Матрица U:')
@@ -125,11 +125,11 @@ for i in range(100):
     F_new = F + df
     solution_new = LU_system_solve(A, F_new)
     du = solution_new - solution
-    
+
     mu = np.linalg.norm(du, ord='fro') / np.linalg.norm(solution_new, ord='fro') / (np.linalg.norm(df, ord='fro') / np.linalg.norm(F_new, ord='fro'))
     print('mu =', mu)
     mu_arr.append(mu)
-    
+
 print('Максимальное из найденных mu:', np.max(mu_arr))
 
 

@@ -65,7 +65,5 @@ int main ( int argc, char** argv, char** env ) {
 	// 2.5e-9 добавка от отсеченного отрезка [0, 1e-10]
 	std::cout << "Ожидаемое зничаение интеграла: " << std::fixed << std::setprecision(12) << value + 2.5e-9<< " примерная ошибка: " << err3 << std::endl;
 
-
-
     return 0;
 }
